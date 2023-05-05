@@ -1,20 +1,18 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		log.Fatal("$PORT not set")
-	}
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World!"))
+	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Hello, world!",
+		})
 	})
-	http.ListenAndServe(port, nil)
+	// listen and serve on 0.0.0.0:8080
+	// on windows "localhost:8080"
+	// can be overriden with the PORT env var
+	r.Run()
 }
